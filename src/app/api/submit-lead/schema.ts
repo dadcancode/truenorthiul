@@ -2,27 +2,42 @@ import { z } from 'zod'
 
 // ─── Enum schemas ─────────────────────────────────────────────────────────────
 
-const ageBracketSchema = z.enum(['under_30', '30_45', '45_55', '55_plus'])
+const primaryConcernSchema = z.enum([
+  'not_saving_enough',
+  'family_protection',
+  'too_much_tax',
+  'want_safe_growth',
+])
+
+const retirementContributionsSchema = z.enum([
+  'not_started',
+  'contributing',
+  'contributing_regularly',
+  'maxed_out',
+])
+
+const primaryGoalSchema = z.enum([
+  'tax_free_income',
+  'family_protection',
+  'both',
+  'build_wealth_first',
+])
+
+const currentInsuranceSchema = z.enum(['none', 'term', 'permanent', 'employer_only'])
 
 const incomeSchema = z.enum(['under_50k', '50_100k', '100_200k', '200k_plus'])
 
-const retirementContributionsSchema = z.enum(['yes_maxed', 'yes_not_maxed', 'no'])
-
-const primaryGoalSchema = z.enum(['protect_family', 'tax_free_retirement', 'both'])
-
-const currentInsuranceSchema = z.enum(['none', 'term', 'whole_life', 'other'])
-
-const employmentTypeSchema = z.enum(['employee', 'self_employed', 'business_owner'])
+const ageBracketSchema = z.enum(['under_30', '30_45', '45_55', '55_plus'])
 
 // ─── Quiz answers schema ──────────────────────────────────────────────────────
 
 export const quizAnswersSchema = z.object({
-  age_bracket: ageBracketSchema,
-  income: incomeSchema,
+  primary_concern: primaryConcernSchema,
   retirement_contributions: retirementContributionsSchema,
   primary_goal: primaryGoalSchema,
   current_insurance: currentInsuranceSchema,
-  employment_type: employmentTypeSchema,
+  income: incomeSchema,
+  age_bracket: ageBracketSchema,
 })
 
 // ─── UTM params schema ────────────────────────────────────────────────────────

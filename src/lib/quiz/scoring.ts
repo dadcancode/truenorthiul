@@ -1,44 +1,66 @@
-import type { AgeBracket, CurrentInsurance, EmploymentType, FitTier, Income, PrimaryGoal, QuizAnswers, RetirementContributions } from '@/types'
+import type {
+  AgeBracket,
+  CurrentInsurance,
+  FitTier,
+  Income,
+  PrimaryConcern,
+  PrimaryGoal,
+  QuizAnswers,
+  RetirementContributions,
+} from '@/types'
 
 // ─── Scoring Tables ─────────────────────────────────────────────────────────
 
-const AGE_SCORES: Record<AgeBracket, number> = {
-  under_30: 1,
-  '30_45': 3,
-  '45_55': 3,
-  '55_plus': 2,
+// Q1 — Primary concern
+// Tax burden + safe growth = prime IUL mindset
+const CONCERN_SCORES: Record<PrimaryConcern, number> = {
+  too_much_tax: 3,       // tax-free growth is the core IUL value prop
+  want_safe_growth: 3,   // downside protection = key IUL differentiator
+  family_protection: 2,  // protection need, IUL fits but so does term
+  not_saving_enough: 2,  // needs a vehicle, possible IUL fit
 }
 
-const INCOME_SCORES: Record<Income, number> = {
-  under_50k: 1,
-  '50_100k': 2,
-  '100_200k': 3,
-  '200k_plus': 3,
-}
-
+// Q2 — Retirement savings status
+// Maxed out = the textbook IUL candidate (no more tax-advantaged room)
 const RETIREMENT_SCORES: Record<RetirementContributions, number> = {
-  no: 1,
-  yes_not_maxed: 2,
-  yes_maxed: 3,
+  maxed_out: 3,              // classic IUL entry point — more to save, nowhere to put it
+  contributing_regularly: 2, // disciplined saver, can likely fund IUL premiums
+  contributing: 2,           // some discipline, needs guidance
+  not_started: 1,            // foundation work needed first
 }
 
+// Q3 — Primary goal
 const GOAL_SCORES: Record<PrimaryGoal, number> = {
-  protect_family: 2,
-  tax_free_retirement: 3,
-  both: 3,
+  both: 3,                  // protection + growth = IUL's exact pitch
+  tax_free_income: 3,       // tax-free retirement income = IUL core benefit
+  family_protection: 2,     // protection focus — IUL works, term may be cheaper
+  build_wealth_first: 1,    // not ready for IUL premium commitment yet
 }
 
+// Q4 — Current insurance
+// Term holders are the prime upgrade target
 const INSURANCE_SCORES: Record<CurrentInsurance, number> = {
-  none: 2,
-  term: 3,
-  whole_life: 1,
-  other: 1,
+  term: 3,          // temporary coverage, IUL adds permanence + cash value
+  none: 2,          // clear protection gap, IUL fills it
+  employer_only: 2, // dependent on employer = vulnerable, needs own coverage
+  permanent: 1,     // already has something; IUL may duplicate
 }
 
-const EMPLOYMENT_SCORES: Record<EmploymentType, number> = {
-  employee: 2,
-  self_employed: 3,
-  business_owner: 3,
+// Q5 — Income
+const INCOME_SCORES: Record<Income, number> = {
+  '200k_plus': 3,   // high income = high tax benefit from IUL
+  '100_200k': 3,    // solid income, likely maxing other accounts
+  '50_100k': 2,     // middle — IUL possible with right structure
+  under_50k: 1,     // premium commitment may be a stretch
+}
+
+// Q6 — Age
+// Sweet spot: 30–45 (long growth runway, protection window)
+const AGE_SCORES: Record<AgeBracket, number> = {
+  '30_45': 3,   // ideal — long runway for cash value compounding
+  under_30: 2,  // great time to start; income may be lower
+  '45_55': 2,   // still works; less time for compounding
+  '55_plus': 1, // shorter runway; cost of insurance rises fast
 }
 
 // ─── Scoring Functions ───────────────────────────────────────────────────────
@@ -49,12 +71,12 @@ const EMPLOYMENT_SCORES: Record<EmploymentType, number> = {
  */
 export function calculateScore(answers: QuizAnswers): number {
   return (
-    AGE_SCORES[answers.age_bracket] +
-    INCOME_SCORES[answers.income] +
+    CONCERN_SCORES[answers.primary_concern] +
     RETIREMENT_SCORES[answers.retirement_contributions] +
     GOAL_SCORES[answers.primary_goal] +
     INSURANCE_SCORES[answers.current_insurance] +
-    EMPLOYMENT_SCORES[answers.employment_type]
+    INCOME_SCORES[answers.income] +
+    AGE_SCORES[answers.age_bracket]
   )
 }
 

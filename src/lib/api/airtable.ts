@@ -19,12 +19,12 @@ interface AirtableFields {
   Timestamp: string
   Score: number
   Tier: string
-  Age: string
-  Income: string
+  Primary_Concern: string
   Retirement: string
   Goal: string
   Insurance: string
-  Employment: string
+  Income: string
+  Age: string
   UTM_Source: string
   UTM_Medium: string
   UTM_Campaign: string
@@ -48,12 +48,12 @@ function buildFields(lead: LeadPayload): AirtableFields {
     Timestamp: lead.timestamp,
     Score: lead.score,
     Tier: lead.fit_tier,
-    Age: lead.answers.age_bracket,
-    Income: lead.answers.income,
+    Primary_Concern: lead.answers.primary_concern,
     Retirement: lead.answers.retirement_contributions,
     Goal: lead.answers.primary_goal,
     Insurance: lead.answers.current_insurance,
-    Employment: lead.answers.employment_type,
+    Income: lead.answers.income,
+    Age: lead.answers.age_bracket,
     UTM_Source: lead.source,
     UTM_Medium: lead.utm_medium ?? '',
     UTM_Campaign: lead.utm_campaign ?? '',

@@ -1,5 +1,4 @@
-import type { NextConfig } from 'next'
-
+/** @type {import('next').NextConfig} */
 const securityHeaders = [
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -11,13 +10,11 @@ const securityHeaders = [
   },
 ]
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   reactStrictMode: true,
-
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-
   async headers() {
     return [
       {
@@ -26,10 +23,8 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-
   async redirects() {
     return [
-      // www → non-www redirect
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'www.truenorthiul.com' }],

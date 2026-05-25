@@ -12,21 +12,52 @@ import EmailGate from './EmailGate'
 const QUIZ_QUESTIONS: Array<{
   id: keyof QuizAnswers
   question: string
+  subtext?: string
   options: Array<{ value: string; label: string }>
 }> = [
   {
-    id: 'age_bracket',
-    question: 'How old are you?',
+    id: 'primary_concern',
+    question: "What's your biggest money concern right now?",
     options: [
-      { value: 'under_30', label: 'Under 30' },
-      { value: '30_45', label: '30 – 45' },
-      { value: '45_55', label: '45 – 55' },
-      { value: '55_plus', label: '55 or older' },
+      { value: 'not_saving_enough', label: "I'm not saving enough for retirement" },
+      { value: 'family_protection', label: 'I worry about what happens to my family if something happens to me' },
+      { value: 'too_much_tax', label: 'I pay too much in taxes and want a better strategy' },
+      { value: 'want_safe_growth', label: 'I want my money to grow, but I can\'t afford to lose it in a downturn' },
+    ],
+  },
+  {
+    id: 'retirement_contributions',
+    question: 'How would you describe your retirement savings right now?',
+    options: [
+      { value: 'not_started', label: "I haven't really started yet" },
+      { value: 'contributing', label: "I'm saving something, but not consistently" },
+      { value: 'contributing_regularly', label: "I'm contributing regularly through work or an IRA" },
+      { value: 'maxed_out', label: "I've maxed out my tax-advantaged accounts and have more to save" },
+    ],
+  },
+  {
+    id: 'primary_goal',
+    question: 'When you picture retirement, what matters most?',
+    options: [
+      { value: 'tax_free_income', label: 'Tax-free income I can count on every year' },
+      { value: 'family_protection', label: 'Knowing my family is protected if I die before I retire' },
+      { value: 'both', label: 'Both — I want growth and protection in one place' },
+      { value: 'build_wealth_first', label: "I'm focused on building wealth first; retirement planning can come later" },
+    ],
+  },
+  {
+    id: 'current_insurance',
+    question: "What's your current life insurance situation?",
+    options: [
+      { value: 'none', label: 'I have no life insurance' },
+      { value: 'term', label: 'I have term life — it covers me until a certain age' },
+      { value: 'permanent', label: 'I have permanent life insurance (whole life or universal)' },
+      { value: 'employer_only', label: 'I rely on what my employer provides' },
     ],
   },
   {
     id: 'income',
-    question: 'What is your annual household income?',
+    question: "What's your annual household income?",
     options: [
       { value: 'under_50k', label: 'Under $50,000' },
       { value: '50_100k', label: '$50,000 – $100,000' },
@@ -35,40 +66,13 @@ const QUIZ_QUESTIONS: Array<{
     ],
   },
   {
-    id: 'retirement_contributions',
-    question: 'Are you currently contributing to a 401(k) or IRA?',
+    id: 'age_bracket',
+    question: 'Last one — how old are you?',
     options: [
-      { value: 'yes_maxed', label: 'Yes — and I max it out every year' },
-      { value: 'yes_not_maxed', label: "Yes — but I haven't maxed it out" },
-      { value: 'no', label: 'No, not currently' },
-    ],
-  },
-  {
-    id: 'primary_goal',
-    question: 'What is your primary financial goal?',
-    options: [
-      { value: 'protect_family', label: 'Protect my family with life insurance' },
-      { value: 'tax_free_retirement', label: 'Build tax-free retirement income' },
-      { value: 'both', label: 'Both — protection and growth' },
-    ],
-  },
-  {
-    id: 'current_insurance',
-    question: 'Do you currently have life insurance?',
-    options: [
-      { value: 'none', label: 'No life insurance' },
-      { value: 'term', label: 'Yes — term life insurance' },
-      { value: 'whole_life', label: 'Yes — whole life insurance' },
-      { value: 'other', label: 'Yes — other type' },
-    ],
-  },
-  {
-    id: 'employment_type',
-    question: 'Which best describes your employment?',
-    options: [
-      { value: 'employee', label: 'Employee (W-2)' },
-      { value: 'self_employed', label: 'Self-employed / Freelancer' },
-      { value: 'business_owner', label: 'Business owner' },
+      { value: 'under_30', label: 'Under 30' },
+      { value: '30_45', label: '30 – 45' },
+      { value: '45_55', label: '45 – 55' },
+      { value: '55_plus', label: '55 or older' },
     ],
   },
 ]

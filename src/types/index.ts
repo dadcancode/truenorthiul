@@ -4,25 +4,25 @@ export type AgeBracket = 'under_30' | '30_45' | '45_55' | '55_plus'
 
 export type Income = 'under_50k' | '50_100k' | '100_200k' | '200k_plus'
 
-export type RetirementContributions = 'yes_maxed' | 'yes_not_maxed' | 'no'
+export type RetirementContributions = 'not_started' | 'contributing' | 'contributing_regularly' | 'maxed_out'
 
-export type PrimaryGoal = 'protect_family' | 'tax_free_retirement' | 'both'
+export type PrimaryGoal = 'tax_free_income' | 'family_protection' | 'both' | 'build_wealth_first'
 
-export type CurrentInsurance = 'none' | 'term' | 'whole_life' | 'other'
+export type CurrentInsurance = 'none' | 'term' | 'permanent' | 'employer_only'
 
-export type EmploymentType = 'employee' | 'self_employed' | 'business_owner'
+export type PrimaryConcern = 'not_saving_enough' | 'family_protection' | 'too_much_tax' | 'want_safe_growth'
 
 export type FitTier = 'strong' | 'good' | 'possible'
 
 // ─── Core Interfaces ────────────────────────────────────────────────────────
 
 export interface QuizAnswers {
-  age_bracket: AgeBracket
-  income: Income
+  primary_concern: PrimaryConcern
   retirement_contributions: RetirementContributions
   primary_goal: PrimaryGoal
   current_insurance: CurrentInsurance
-  employment_type: EmploymentType
+  income: Income
+  age_bracket: AgeBracket
 }
 
 /**

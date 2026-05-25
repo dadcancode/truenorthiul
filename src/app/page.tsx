@@ -82,9 +82,14 @@ export default function HomePage() {
         <div className="max-w-quiz mx-auto">
           <div className="relative">
             <div className="quiz-card opacity-60 blur-[1px] pointer-events-none select-none" aria-hidden="true">
-              <p className="quiz-question">How old are you?</p>
+              <p className="quiz-question">What&apos;s your biggest money concern right now?</p>
               <div className="space-y-2.5">
-                {['Under 30', '30 – 45', '45 – 55', '55 or older'].map((label) => (
+                {[
+                  "I'm not saving enough for retirement",
+                  'I worry about my family if something happens to me',
+                  'I pay too much in taxes',
+                  'I want growth without the risk of losing it',
+                ].map((label) => (
                   <div key={label} className="answer-option">
                     <span className="radio-indicator" />
                     <span>{label}</span>
