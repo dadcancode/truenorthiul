@@ -43,7 +43,7 @@ export default function PrivacyPage() {
               <li><strong>Delivering results</strong> — your quiz score and tier are computed immediately and shown to you</li>
               <li><strong>Email nurture</strong> — we may send educational content about IUL, financial planning, and related topics based on your quiz results</li>
               <li><strong>Analytics</strong> — to understand how visitors use the site and improve the experience</li>
-              <li><strong>Future advisor matching</strong> — we may (with your consent) connect you with licensed insurance professionals. We will notify you before doing so.</li>
+              <li><strong>Advisor matching</strong> — by submitting your quiz results, you agree that a licensed insurance professional may contact you to discuss your results and IUL options.</li>
             </ul>
           </section>
 
