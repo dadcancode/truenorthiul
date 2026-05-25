@@ -22,17 +22,7 @@ const nextConfig = {
         headers: securityHeaders,
       },
     ]
-  },
-  async redirects() {
-    return [
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'www.truenorthiul.com' }],
-        destination: 'https://truenorthiul.com/:path*',
-        permanent: true,
-      },
-    ]
-  },
+  }
 }
 
 export default nextConfig
