@@ -21,7 +21,8 @@ const inter = Inter({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://truenorthiul.com'
 const ga4Id = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID
-const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID
+// Pixel ID is public — hardcoded as fallback, env var allows override
+const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? '2196404684494525'
 
 export const metadata: Metadata = {
   title: 'TrueNorth IUL — Is an IUL Right for You?',
@@ -67,7 +68,7 @@ export default function RootLayout({
             </Script>
           </>
         )}
-        {isProd && metaPixelId && (
+        {isProd && (
           <Script id="meta-pixel" strategy="afterInteractive">
             {`
               !function(f,b,e,v,n,t,s)
@@ -85,6 +86,19 @@ export default function RootLayout({
         )}
       </head>
       <body className="font-sans bg-neutral-50 text-neutral-900 antialiased">
+        {/* Meta Pixel noscript fallback — required for compliance */}
+        {isProd && (
+          <noscript>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              height="1"
+              width="1"
+              style={{ display: 'none' }}
+              src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
+              alt=""
+            />
+          </noscript>
+        )}
         <div className="page-shell">
           <Nav />
           <main className="flex-1">{children}</main>
