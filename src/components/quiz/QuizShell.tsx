@@ -6,6 +6,7 @@ import type { QuizAnswers, FitTier } from '@/types'
 import QuizProgress from './QuizProgress'
 import QuizStep from './QuizStep'
 import EmailGate from './EmailGate'
+import { pixelTrack, pixelCustom } from '@/lib/pixel'
 
 // ─── Quiz questions ────────────────────────────────────────────────────────
 
@@ -179,6 +180,11 @@ export default function QuizShell() {
   const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
+  // Fire Meta Pixel ViewContent on quiz load
+  useEffect(() => {
+    pixelTrack('ViewContent', { content_name: 'IUL Quiz' })
+  }, [])
+
   // Capture UTM params on mount
   useEffect(() => {
     const utm: UTMParams = {}
@@ -262,6 +268,11 @@ export default function QuizShell() {
           })
           return
         }
+
+        // Fire Meta Pixel Lead event
+        pixelTrack('Lead')
+        // Fire custom completion event for funnel analysis
+        pixelCustom('quiz_completed', { fit_tier: data.tier, score: data.score })
 
         dispatch({ type: 'SUBMIT_SUCCESS', tier: data.tier, score: data.score })
         router.push(`/results?tier=${data.tier}&score=${data.score}`)
