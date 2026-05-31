@@ -203,10 +203,22 @@ export default function QuizShell() {
     }
   }, [searchParams])
 
+  // Fire pixel event when email gate appears
+  useEffect(() => {
+    if (state.step === TOTAL_QUESTIONS) {
+      pixelCustom('quiz_email_reached')
+    }
+  }, [state.step])
+
   // Handle answer selection with auto-advance
   const handleSelectAnswer = useCallback(
     (question: keyof QuizAnswers, value: string) => {
       dispatch({ type: 'SELECT_ANSWER', question, value })
+
+      // Fire quiz_started on first answer only
+      if (state.step === 0) {
+        pixelCustom('quiz_started')
+      }
 
       // Clear any pending timer
       if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current)
@@ -216,7 +228,7 @@ export default function QuizShell() {
         dispatch({ type: 'NEXT_STEP' })
       }, 300)
     },
-    []
+    [state.step]
   )
 
   // Clear timers on unmount

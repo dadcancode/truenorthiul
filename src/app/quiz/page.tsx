@@ -11,8 +11,14 @@ export const metadata: Metadata = {
 export default function QuizPage() {
   return (
     <section className="min-h-[calc(100vh-4rem)] bg-neutral-50 py-8 px-4" aria-labelledby="quiz-heading">
-      <h1 id="quiz-heading" className="sr-only">IUL Fit Quiz</h1>
       <div className="max-w-quiz mx-auto">
+        {/* Headline mirrors ad promise — bridges the click → page expectation gap */}
+        <div className="text-center mb-6">
+          <h1 id="quiz-heading" className="font-display text-2xl md:text-3xl text-brand-navy-900 mb-1">
+            Get Your Free IUL Fit Report
+          </h1>
+          <p className="text-neutral-500 text-sm">6 questions · 2 minutes · No advisor pitch</p>
+        </div>
         <QuizErrorBoundary>
           <Suspense
             fallback={
