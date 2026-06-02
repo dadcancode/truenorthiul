@@ -134,7 +134,7 @@ export default function EmailGate({ onSubmit, onBack, submitting, error }: Email
         </button>
 
         <p className="text-center text-xs text-neutral-400 mt-3">
-          By submitting, you agree a licensed IUL specialist may follow up about your results.
+          We'll email your results instantly. No spam.
           No spam. Unsubscribe anytime.
         </p>
       </form>
