@@ -134,8 +134,7 @@ export default function EmailGate({ onSubmit, onBack, submitting, error }: Email
         </button>
 
         <p className="text-center text-xs text-neutral-400 mt-3">
-          We'll email your results instantly. No spam.
-          No spam. Unsubscribe anytime.
+          We&apos;ll email your results instantly. No spam. Unsubscribe anytime.
         </p>
       </form>
     </div>
