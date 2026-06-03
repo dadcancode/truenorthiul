@@ -42,8 +42,11 @@ function getApiBase(): string {
  * - All other non-2xx responses throw a descriptive Error.
  */
 export async function addToMailerLite(lead: LeadPayload): Promise<void> {
-  const apiKey = process.env.MAILERLITE_API_KEY!
-  const groupId = process.env.MAILERLITE_GROUP_ID!
+  const apiKey = (process.env.MAILERLITE_API_KEY ?? '').trim()
+  const groupId = (process.env.MAILERLITE_GROUP_ID ?? '').trim()
+
+  if (!apiKey) throw new Error('MAILERLITE_API_KEY is not set.')
+  if (!groupId) throw new Error('MAILERLITE_GROUP_ID is not set.')
 
   const fields: MailerLiteFields = {
     fit_tier: lead.fit_tier,
