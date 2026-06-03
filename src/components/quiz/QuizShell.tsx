@@ -8,6 +8,7 @@ import QuizStep from './QuizStep'
 import EmailGate from './EmailGate'
 import { pixelTrack, pixelCustom } from '@/lib/pixel'
 import { vaTrack } from '@/lib/va'
+import QuizIntro from './QuizIntro'
 
 // ─── Quiz questions ────────────────────────────────────────────────────────
 
@@ -94,6 +95,7 @@ interface UTMParams {
 
 interface QuizState {
   step: number
+  showIntro: boolean
   answers: Partial<QuizAnswers>
   email: string
   firstName: string
@@ -113,11 +115,13 @@ type QuizAction =
   | { type: 'SUBMIT_SUCCESS'; tier: FitTier; score: number }
   | { type: 'SUBMIT_ERROR'; error: string }
   | { type: 'RETRY' }
-  | { type: 'SET_UTM'; utm: UTMParams }
+  | { type: 'SET_UTM'; utm: UTMParams; showIntro: boolean }
+  | { type: 'DISMISS_INTRO' }
   | { type: 'ANIMATION_DONE' }
 
 const initialState: QuizState = {
   step: 0,
+  showIntro: false,
   answers: {},
   email: '',
   firstName: '',
@@ -164,7 +168,9 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
     case 'RETRY':
       return { ...state, error: null, step: 6 }
     case 'SET_UTM':
-      return { ...state, utm: action.utm }
+      return { ...state, utm: action.utm, showIntro: action.showIntro }
+    case 'DISMISS_INTRO':
+      return { ...state, showIntro: false }
     case 'ANIMATION_DONE':
       return { ...state, animating: false }
     default:
@@ -186,7 +192,7 @@ export default function QuizShell() {
     pixelTrack('ViewContent', { content_name: 'IUL Quiz' })
   }, [])
 
-  // Capture UTM params on mount
+  // Capture UTM params on mount; show intro for ad traffic
   useEffect(() => {
     const utm: UTMParams = {}
     const src = searchParams.get('utm_source')
@@ -199,10 +205,17 @@ export default function QuizShell() {
     if (campaign) utm.campaign = campaign
     if (content) utm.content = content
     if (term) utm.term = term
-    if (Object.keys(utm).length > 0) {
-      dispatch({ type: 'SET_UTM', utm })
-    }
+    const hasUtm = Object.keys(utm).length > 0
+    dispatch({ type: 'SET_UTM', utm, showIntro: hasUtm })
   }, [searchParams])
+
+  // Fire pixel when intro is shown
+  useEffect(() => {
+    if (state.showIntro) {
+      pixelCustom('intro_shown')
+      vaTrack('intro_shown')
+    }
+  }, [state.showIntro])
 
   // Fire pixel event when email gate appears
   useEffect(() => {
@@ -310,6 +323,21 @@ export default function QuizShell() {
       ? 'quiz-step-enter'
       : 'quiz-step-enter-back'
     : ''
+
+  // ── Render: Intro (ad traffic only) ──
+  if (state.showIntro) {
+    return (
+      <div className="quiz-card">
+        <QuizIntro
+          onStart={() => {
+            pixelCustom('intro_dismissed')
+            vaTrack('intro_dismissed')
+            dispatch({ type: 'DISMISS_INTRO' })
+          }}
+        />
+      </div>
+    )
+  }
 
   // ── Render: Loading / Submitting ──
   if (state.step === 7) {
