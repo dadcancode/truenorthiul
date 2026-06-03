@@ -14,7 +14,7 @@ export default function Footer() {
           </nav>
 
           <p className="footer-address">
-            123 Main St, Fort Worth, TX 76101
+            Fort Worth, TX
           </p>
 
           <p className="footer-disclaimer">
