@@ -7,6 +7,7 @@ import QuizProgress from './QuizProgress'
 import QuizStep from './QuizStep'
 import EmailGate from './EmailGate'
 import { pixelTrack, pixelCustom } from '@/lib/pixel'
+import { vaTrack } from '@/lib/va'
 
 // ─── Quiz questions ────────────────────────────────────────────────────────
 
@@ -207,6 +208,7 @@ export default function QuizShell() {
   useEffect(() => {
     if (state.step === TOTAL_QUESTIONS) {
       pixelCustom('quiz_email_reached')
+      vaTrack('quiz_email_reached')
     }
   }, [state.step])
 
@@ -218,6 +220,7 @@ export default function QuizShell() {
       // Fire quiz_started on first answer only
       if (state.step === 0) {
         pixelCustom('quiz_started')
+        vaTrack('quiz_started')
       }
 
       // Clear any pending timer
@@ -285,6 +288,7 @@ export default function QuizShell() {
         pixelTrack('Lead')
         // Fire custom completion event for funnel analysis
         pixelCustom('quiz_completed', { fit_tier: data.tier, score: data.score })
+        vaTrack('quiz_completed', { tier: data.tier, score: data.score })
 
         dispatch({ type: 'SUBMIT_SUCCESS', tier: data.tier, score: data.score })
         router.push(`/results?tier=${data.tier}&score=${data.score}`)
